@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -11,6 +12,7 @@ from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
+from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -140,6 +142,96 @@ async def get_leads():
         if isinstance(d.get("created_at"), str):
             d["created_at"] = datetime.fromisoformat(d["created_at"])
     return docs
+
+
+AI_SYSTEM_PROMPT = """You are the AI Marketplace Consultant for Advance Connect — India's trusted marketplace growth partner with 9+ years of experience helping businesses sell on Amazon, Flipkart and Meesho.
+
+Your job: help visitors understand Advance Connect's services and guide them toward booking a FREE marketplace audit or consultation.
+
+Services you know deeply: Amazon/Flipkart/Meesho account management, Amazon PPC, Flipkart advertising, marketplace SEO, catalog management, product listing, inventory & order management, account health & reinstatement, business consulting.
+
+Company facts (only these are verified — never invent statistics, client names or revenue figures):
+- 9+ years of marketplace experience
+- Specialists in Amazon, Flipkart and Meesho
+- Based in Bhopal, Madhya Pradesh, India
+- Contact: Ritesh, +91 96695 03302 (call & WhatsApp), advanceconnectindiaa@gmail.com
+- Business hours: Mon–Sat, 10 AM – 7 PM IST
+- Free marketplace audit for every new enquiry
+
+Rules:
+- Keep replies short: 2-4 sentences, friendly, expert, confident.
+- Always steer the conversation toward the free audit, a WhatsApp chat, or a call.
+- If asked about pricing: explain it depends on catalog size and goals, and the free audit comes first.
+- If asked something unrelated to marketplaces/ecommerce, politely bring it back to how Advance Connect can help their business.
+- Never fabricate case studies, numbers or guarantees."""
+
+CHAT_SESSIONS = {}
+
+
+class ChatRequest(BaseModel):
+    session_id: str = Field(min_length=6, max_length=64)
+    message: str = Field(min_length=1, max_length=2000)
+
+
+class NewsletterRequest(BaseModel):
+    email: EmailStr
+
+
+@api_router.post("/chat")
+async def chat_stream(req: ChatRequest):
+    chat = CHAT_SESSIONS.get(req.session_id)
+    if chat is None:
+        if len(CHAT_SESSIONS) > 300:
+            CHAT_SESSIONS.pop(next(iter(CHAT_SESSIONS)))
+        chat = LlmChat(
+            api_key=os.environ["EMERGENT_LLM_KEY"],
+            session_id=req.session_id,
+            system_message=AI_SYSTEM_PROMPT,
+        ).with_model("openai", "gpt-5.4")
+        CHAT_SESSIONS[req.session_id] = chat
+
+    async def gen():
+        full = []
+        try:
+            async for ev in chat.stream_message(UserMessage(text=req.message)):
+                if isinstance(ev, TextDelta):
+                    full.append(ev.content)
+                    yield ev.content
+                elif isinstance(ev, StreamDone):
+                    break
+        except Exception as e:
+            logger.error(f"Chat stream error: {e}")
+            yield "Sorry, I hit a snag. Please try again — or WhatsApp us directly at +91 96695 03302."
+        try:
+            await db.chat_messages.insert_one({
+                "id": str(uuid.uuid4()),
+                "session_id": req.session_id,
+                "user_message": req.message,
+                "assistant_message": "".join(full),
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            })
+        except Exception as e:
+            logger.error(f"Chat persist error: {e}")
+
+    return StreamingResponse(
+        gen(),
+        media_type="text/plain",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+@api_router.post("/newsletter")
+async def subscribe_newsletter(req: NewsletterRequest):
+    await db.newsletter.update_one(
+        {"email": req.email},
+        {"$setOnInsert": {
+            "id": str(uuid.uuid4()),
+            "email": req.email,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }},
+        upsert=True,
+    )
+    return {"status": "subscribed"}
 
 
 app.include_router(api_router)

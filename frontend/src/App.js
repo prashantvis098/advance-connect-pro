@@ -18,9 +18,14 @@ import { Workflow } from "./components/Workflow";
 import { CaseStudies } from "./components/CaseStudies";
 import { Testimonials } from "./components/Testimonials";
 import { FAQ } from "./components/FAQ";
-import { ContactSection } from "./components/ContactSection";
-import { Footer } from "./components/Footer";
+import { ContactSplit } from "./components/ContactSplit";
+import { MapSection } from "./components/MapSection";
+import { PremiumFooter } from "./components/PremiumFooter";
+import { AIConsultant } from "./components/AIConsultant";
+import { FloatingActions } from "./components/FloatingActions";
+import { CTABand } from "./components/CTABand";
 import "./sections.css";
+import "./part3.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -58,15 +63,36 @@ function App() {
         <WhyChooseUs />
         <MarketplaceExpertise />
         <ServicesGrid />
+        <CTABand
+          testid="cta-band-services"
+          onBookAudit={scrollToForm}
+          title="Not sure which service you need?"
+          subtitle="Start with a free marketplace audit — we'll tell you exactly what will move your sales."
+        />
         <CommandCenter />
         <Workflow />
         <TrustBar />
+        <CTABand
+          testid="cta-band-metrics"
+          onBookAudit={scrollToForm}
+          title="Ready to become our next success metric?"
+          subtitle="9+ years of marketplace expertise, one free audit away."
+        />
         <CaseStudies />
         <Testimonials />
         <FAQ />
-        <ContactSection />
+        <CTABand
+          testid="cta-band-faq"
+          onBookAudit={scrollToForm}
+          title="Still have questions?"
+          subtitle="Get answers specific to your business — free consultation, fast response."
+        />
+        <ContactSplit />
+        <MapSection />
       </main>
-      <Footer />
+      <PremiumFooter />
+      <FloatingActions onBookAudit={scrollToForm} />
+      <AIConsultant onBookAudit={scrollToForm} />
     </div>
   );
 }
