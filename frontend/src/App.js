@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, lazy, Suspense } from "react";
 import "@/App.css";
 import { AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
@@ -19,13 +19,15 @@ import { CaseStudies } from "./components/CaseStudies";
 import { Testimonials } from "./components/Testimonials";
 import { FAQ } from "./components/FAQ";
 import { ContactSplit } from "./components/ContactSplit";
-import { MapSection } from "./components/MapSection";
 import { PremiumFooter } from "./components/PremiumFooter";
-import { AIConsultant } from "./components/AIConsultant";
 import { FloatingActions } from "./components/FloatingActions";
 import { CTABand } from "./components/CTABand";
 import "./sections.css";
 import "./part3.css";
+import "./polish.css";
+
+const MapSection = lazy(() => import("./components/MapSection").then((m) => ({ default: m.MapSection })));
+const AIConsultant = lazy(() => import("./components/AIConsultant").then((m) => ({ default: m.AIConsultant })));
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -50,6 +52,7 @@ function App() {
 
   return (
     <div className="app-root">
+      <a href="#top" className="skip-link">Skip to content</a>
       <CursorGlow />
       <Toaster position="top-center" richColors />
       <AnimatePresence>
@@ -88,11 +91,15 @@ function App() {
           subtitle="Get answers specific to your business — free consultation, fast response."
         />
         <ContactSplit />
-        <MapSection />
+        <Suspense fallback={<div style={{ minHeight: "640px" }} aria-hidden="true" />}>
+          <MapSection />
+        </Suspense>
       </main>
       <PremiumFooter />
       <FloatingActions onBookAudit={scrollToForm} />
-      <AIConsultant onBookAudit={scrollToForm} />
+      <Suspense fallback={null}>
+        <AIConsultant onBookAudit={scrollToForm} />
+      </Suspense>
     </div>
   );
 }

@@ -11,13 +11,13 @@ export const CursorGlow = () => {
       tx = e.clientX;
       ty = e.clientY;
       if (dotRef.current)
-        dotRef.current.style.transform = `translate(${tx - 3}px, ${ty - 3}px)`;
+        dotRef.current.style.transform = `translate3d(${tx - 3}px, ${ty - 3}px, 0)`;
     };
     const loop = () => {
       gx += (tx - gx) * 0.12;
       gy += (ty - gy) * 0.12;
       if (glowRef.current)
-        glowRef.current.style.transform = `translate(${gx - 150}px, ${gy - 150}px)`;
+        glowRef.current.style.transform = `translate3d(${gx - 150}px, ${gy - 150}px, 0)`;
       raf = requestAnimationFrame(loop);
     };
     window.addEventListener("mousemove", move);

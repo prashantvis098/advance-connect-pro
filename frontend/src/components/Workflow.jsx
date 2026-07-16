@@ -34,7 +34,7 @@ export const Workflow = () => {
           { opacity: 0, y: 46, x: i % 2 ? 30 : -30 },
           {
             opacity: 1, y: 0, x: 0, duration: 0.9, ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 84%" },
+            scrollTrigger: { trigger: el, start: "top 84%", once: true },
           }
         );
       });

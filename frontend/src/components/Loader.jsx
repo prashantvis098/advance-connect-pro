@@ -8,14 +8,14 @@ export const Loader = ({ onDone }) => {
   useEffect(() => {
     let p = 0;
     const timer = setInterval(() => {
-      p += Math.random() * 16 + 6;
+      p += Math.random() * 22 + 12;
       if (p >= 100) {
         p = 100;
         clearInterval(timer);
-        setTimeout(onDone, 550);
+        setTimeout(onDone, 420);
       }
       setProgress(p);
-    }, 140);
+    }, 95);
     return () => clearInterval(timer);
   }, [onDone]);
 

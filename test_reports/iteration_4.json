@@ -1,0 +1,50 @@
+{
+  "summary": "Performance/polish verification pass — no redesign expected. Comprehensively tested hero 3D canvas rendering + resume after scroll, lazy-loaded Map/AIConsultant, all form submissions, SEO artifacts, accessibility skip-link, responsive overflow at 5 widths, GSAP once:true animations, and full-page console error monitoring. Nearly all checks passed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verified_features": [
+    "Zero console errors and zero page errors on load + full scroll + form submissions + AI chat",
+    "Hero <canvas> renders; still present after scrolling to bottom and back to top; mouse move works — IntersectionObserver frameloop toggle safe (no errors)",
+    "Skip-to-content link is the FIRST Tab focus target (verified: activeElement.className='skip-link', text='Skip to content') and is visible when focused (screenshot confirms)",
+    "SEO: og:image present, twitter:card=summary_large_image, canonical present, 2 JSON-LD schemas, title correct",
+    "/robots.txt returns 200 with Sitemap: line pointing to correct URL",
+    "/sitemap.xml returns 200 with valid XML urlset",
+    "Hero lead form submits successfully — [data-testid=lead-form-success] shown ('Request Received')",
+    "Contact form submits successfully — [data-testid=contact-form-success] shown",
+    "Newsletter subscribe button click succeeds (no error; success is toast-based, not a testid element)",
+    "AI launcher opens, message sent, streamed reply arrived within ~10s ('Hi! I'm the Advance Connect marketplace consultant...')",
+    "MapSection lazy-loads on scroll: iframe renders; buttons present with testids map-directions-btn, map-call-btn, map-whatsapp-btn (hrefs correct: google maps, tel:+919669503302, wa.me/919669503302)",
+    "Floating buttons: floating-whatsapp-btn href=wa.me/919669503302 with prefilled text; floating-call-btn href=tel:+919669503302; floating-book-btn (button, not anchor — expected)",
+    "GSAP once:true worked: all workflow-step-1..6 opacity=1 after scrolling past — elements did not stay hidden",
+    "No horizontal overflow at 1920, 1366, 768, 390, 344 widths (all returned 0px)"
+  ],
+  "notes_not_bugs": [
+    "Review-request specced testids like 'lead-form-name', 'map-directions', 'contact-form-name' — actual code uses 'lead-input-name', 'map-directions-btn', 'contact-input-name'. All elements exist and function. Recommend updating spec/docs for future tests to match code (or vice versa) to avoid confusion.",
+    "Newsletter has no 'newsletter-success' testid — success feedback is via react-hot-toast. Considered acceptable; if E2E assertion is desired, adding a hidden success testid would help future testing."
+  ],
+  "performance_observation": {
+    "scroll_steps_ms_10_stages": [880, 623, 680, 605, 745, 651, 697, 604, 607, 606],
+    "long_frames_during_smooth_scroll_to_top": "93 / 120 frames >50ms in headless automated browser (Lenis smooth-scroll animation)",
+    "note": "Headless Chromium in cloud CI does not represent real user perf; long-frame count is inflated by Lenis RAF loop + 3D canvas rendering. No user-visible jank triggered errors or blocked interactions during automated flow. Recommend verifying on a real device with the browser devtools Performance panel for a definitive assessment. Optimizations from the diff (particle reduction, frameloop pause, once:true, blur reduction) are in place and structurally sound."
+  },
+  "critical_code_review_comments": [
+    "Hero3D IntersectionObserver frameloop toggle is a good pattern; ensure the observer is disconnected on unmount (verify a cleanup returns from the useEffect).",
+    "Newsletter footer: adding a data-testid='newsletter-success' (rendered briefly on success) would improve E2E testability with minimal UI impact.",
+    "Testid naming inconsistency across the codebase (lead-input-* vs lead-form-* vs contact-form-*): consider standardizing to one convention.",
+    "Skip-link visible-on-focus verified via activeElement; ensure the CSS :focus-visible outline is high-contrast on the dark hero background (currently uses fixed positioned overlay pattern which looked good in screenshot)."
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "No functional fixes required. Optionally: standardize testid naming and/or update review-request spec to match actual code; add newsletter-success testid for automated E2E coverage."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only)", "frontend": "100% on critical flows"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Correct testids: lead-input-{name,phone,email,business,challenge}, lead-select-{marketplace,sales}, lead-form-submit-button, lead-form-success; contact-input-{name,phone,email,business,message}, contact-select-{marketplace,sales}, contact-form-submit, contact-form-success; newsletter-email-input, newsletter-subscribe-btn (no success testid — toast only); map-directions-btn, map-call-btn, map-whatsapp-btn; floating-{whatsapp,call,book}-btn. Lenis smooth-scroll — wait 1.5–2s after scroll. AI reply streams 5–10s."
+}

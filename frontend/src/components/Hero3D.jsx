@@ -1,9 +1,15 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Line, Grid } from "@react-three/drei";
 import * as THREE from "three";
 
-const Particles = ({ count = 700 }) => {
+const LOW_POWER =
+  typeof window !== "undefined" &&
+  ((navigator.hardwareConcurrency || 8) <= 4 || window.innerWidth < 768);
+
+const PANEL_EDGES_GEO = new THREE.BoxGeometry(3.2, 1.9, 0.06);
+
+const Particles = ({ count = 500 }) => {
   const ref = useRef();
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
@@ -94,8 +100,7 @@ const GlassPanel = ({ position, rotation, seed = 0, accent = "#22C55E", bars = f
           </>
         )}
         {/* border glow */}
-        <lineSegments>
-          <edgesGeometry args={[new THREE.BoxGeometry(3.2, 1.9, 0.06)]} />
+        <lineSegments geometry={PANEL_EDGES_GEO}>
           <lineBasicMaterial color="#3b6ff0" transparent opacity={0.5} />
         </lineSegments>
       </group>
@@ -106,8 +111,8 @@ const GlassPanel = ({ position, rotation, seed = 0, accent = "#22C55E", bars = f
 const Rig = () => {
   useFrame((state) => {
     const { pointer, camera } = state;
-    camera.position.x += (pointer.x * 0.9 - camera.position.x) * 0.04;
-    camera.position.y += (pointer.y * 0.5 + 0.4 - camera.position.y) * 0.04;
+    camera.position.x += (pointer.x * 0.9 - camera.position.x) * 0.05;
+    camera.position.y += (pointer.y * 0.5 + 0.4 - camera.position.y) * 0.05;
     camera.lookAt(0, 0, 0);
   });
   return null;
@@ -116,17 +121,21 @@ const Rig = () => {
 const Scene = () => (
   <>
     <fog attach="fog" args={["#0B1220", 9, 24]} />
-    <ambientLight intensity={0.5} />
-    <pointLight position={[6, 5, 4]} intensity={40} color="#2563EB" />
-    <pointLight position={[-6, -2, 3]} intensity={22} color="#22C55E" />
-    <directionalLight position={[0, 6, 5]} intensity={0.8} color="#ffffff" />
+    <ambientLight intensity={0.55} />
+    <pointLight position={[6, 5, 4]} intensity={44} color="#2563EB" />
+    <pointLight position={[-6, -2, 3]} intensity={24} color="#22C55E" />
+    <directionalLight position={[0, 6, 5]} intensity={0.9} color="#ffffff" />
 
-    <Particles />
+    <Particles count={LOW_POWER ? 220 : 500} />
 
     <GlassPanel position={[3.4, 0.9, -1.5]} rotation={[0, -0.45, 0.03]} seed={1} accent="#22C55E" />
     <GlassPanel position={[4.6, -1.3, -2.6]} rotation={[0.05, -0.55, -0.04]} seed={4} accent="#60A5FA" bars scale={0.85} />
-    <GlassPanel position={[-4.6, 1.6, -3.5]} rotation={[0, 0.5, -0.03]} seed={7} accent="#22C55E" bars scale={0.75} />
-    <GlassPanel position={[-4.2, -1.2, -2.2]} rotation={[0.04, 0.45, 0.04]} seed={2.5} accent="#93C5FD" scale={0.7} />
+    {!LOW_POWER && (
+      <>
+        <GlassPanel position={[-4.6, 1.6, -3.5]} rotation={[0, 0.5, -0.03]} seed={7} accent="#22C55E" bars scale={0.75} />
+        <GlassPanel position={[-4.2, -1.2, -2.2]} rotation={[0.04, 0.45, 0.04]} seed={2.5} accent="#93C5FD" scale={0.7} />
+      </>
+    )}
 
     <Grid
       position={[0, -2.8, 0]}
@@ -145,14 +154,30 @@ const Scene = () => (
   </>
 );
 
-export const Hero3D = () => (
-  <div className="absolute inset-0 z-0" data-testid="hero-3d-canvas" aria-hidden="true">
-    <Canvas
-      camera={{ position: [0, 0.4, 7.5], fov: 45 }}
-      dpr={[1, 1.5]}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-    >
-      <Scene />
-    </Canvas>
-  </div>
-);
+export const Hero3D = () => {
+  const wrapRef = useRef(null);
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { threshold: 0.02 }
+    );
+    if (wrapRef.current) obs.observe(wrapRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={wrapRef} className="absolute inset-0 z-0" data-testid="hero-3d-canvas" aria-hidden="true">
+      <Canvas
+        camera={{ position: [0, 0.4, 7.5], fov: 45 }}
+        dpr={LOW_POWER ? [1, 1.25] : [1, 1.5]}
+        frameloop={active ? "always" : "never"}
+        performance={{ min: 0.5 }}
+        gl={{ antialias: !LOW_POWER, alpha: true, powerPreference: "high-performance" }}
+      >
+        <Scene />
+      </Canvas>
+    </div>
+  );
+};

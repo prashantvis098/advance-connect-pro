@@ -57,7 +57,7 @@ export const AboutTimeline = () => {
           { opacity: 0, y: 40 },
           {
             opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 82%" },
+            scrollTrigger: { trigger: el, start: "top 82%", once: true },
           }
         );
       });
