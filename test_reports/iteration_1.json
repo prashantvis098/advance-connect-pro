@@ -1,0 +1,22 @@
+{
+  "summary": "Full backend + frontend test of Advance Connect lead-gen homepage. All 5 backend tests passed (100%). All frontend flows work: hero, 3D canvas, glass form with successful lead submission, navbar transitions, animated trust bar counters, 7 why-us cards, contact links (tel/wa.me/mailto), map iframe. No horizontal overflow on mobile 390x844.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/test_leads.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "LeadForm: the marketplace select has HTML5 `required` attribute AND a JS toast for empty marketplace. Native browser validation blocks submit before the JS toast fires, so the client-side toast branch is effectively dead code. Consider removing `required` from the select if you want the custom toast to trigger, or remove the JS check.",
+    "server.py stores created_at as ISO string in Mongo but Lead model expects datetime — GET /api/leads converts back on read which works, but consider storing as native BSON datetime for range queries.",
+    "GET /api/leads has no auth/pagination — publicly exposes all leads. Should be protected or removed in production."
+  ],
+  "updated_files": ["/app/backend/tests/test_leads.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "Created 1 TEST_ prefixed lead via API test (kept for GET verification).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend + frontend fully working. Note: unauthenticated GET /api/leads exposes all leads publicly — flag for main agent if this is a security concern. Client-side 'select marketplace' toast never fires because native HTML5 required kicks in first."
+}
