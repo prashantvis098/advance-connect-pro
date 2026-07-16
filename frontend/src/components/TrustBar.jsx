@@ -36,15 +36,15 @@ const PLACEHOLDERS = [
 ];
 
 export const TrustBar = () => (
-  <section id="results" className="bg-[#F8FAFC] py-24 md:py-32" data-testid="trust-bar">
+  <section id="results" className="bg-white py-24 md:py-32" data-testid="trust-bar">
     <div className="max-w-7xl mx-auto px-5 lg:px-8">
       <motion.p
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="font-numbers text-xs tracking-[0.35em] uppercase text-slate-400 mb-14"
+        className="font-numbers text-xs tracking-[0.35em] uppercase text-blue-600 mb-14"
       >
-        Trusted Marketplace Expertise
+        Success Metrics
       </motion.p>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-14 gap-x-8">
         {STATS.map((s, i) => (
@@ -78,7 +78,7 @@ export const TrustBar = () => (
             <span className="font-numbers font-bold tracking-tighter text-slate-300 text-5xl md:text-6xl">—</span>
             <p className="mt-3 text-slate-600 font-medium text-sm md:text-base">{p.label}</p>
             <span className="mt-3 inline-flex items-center text-[11px] font-medium text-slate-400 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-0.5">
-              Verified data coming soon
+              To be updated with verified client data
             </span>
           </motion.div>
         ))}

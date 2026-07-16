@@ -2,17 +2,18 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Award, Users, FileBarChart, MessageSquareText,
-  TrendingUp, Compass, Zap,
+  TrendingUp, Compass, Zap, BadgeCheck,
 } from "lucide-react";
 
 const CARDS = [
-  { n: "01", icon: Award, title: "Marketplace Experts", desc: "9+ years of deep, hands-on expertise across Amazon, Flipkart and Meesho — policies, algorithms and growth levers.", span: "md:col-span-7" },
-  { n: "02", icon: Users, title: "Dedicated Managers", desc: "A dedicated account manager who knows your business, your catalog and your goals.", span: "md:col-span-5" },
-  { n: "03", icon: FileBarChart, title: "Weekly Reports", desc: "Clear, honest weekly performance reports. You always know exactly where your money goes.", span: "md:col-span-4" },
-  { n: "04", icon: MessageSquareText, title: "Transparent Communication", desc: "Direct access on WhatsApp and phone. No account executives hiding behind email queues.", span: "md:col-span-4" },
+  { n: "01", icon: Award, title: "9+ Years Experience", desc: "Nearly a decade of deep, hands-on marketplace work — policies, algorithms and growth levers mastered across every category.", span: "md:col-span-7" },
+  { n: "02", icon: BadgeCheck, title: "Marketplace Specialists", desc: "Amazon, Flipkart and Meesho only. We don't dabble — we specialise.", span: "md:col-span-5" },
+  { n: "03", icon: Users, title: "Dedicated Account Managers", desc: "A dedicated manager who knows your business, your catalog and your goals.", span: "md:col-span-4" },
+  { n: "04", icon: MessageSquareText, title: "Transparent Reporting", desc: "Honest numbers, clear communication. You always know exactly where your money goes.", span: "md:col-span-4" },
   { n: "05", icon: TrendingUp, title: "Growth Focus", desc: "Every decision — listings, ads, pricing — is measured against one thing: your sales growth.", span: "md:col-span-4" },
-  { n: "06", icon: Compass, title: "Business Strategy", desc: "Beyond account management — category strategy, seasonal planning and marketplace expansion.", span: "md:col-span-7" },
-  { n: "07", icon: Zap, title: "Fast Support", desc: "Account suspended? Listing blocked? We respond fast, because marketplace downtime costs you sales.", span: "md:col-span-5" },
+  { n: "06", icon: FileBarChart, title: "Weekly Performance Reports", desc: "Sales, spend, rank and account health — reported to you every single week.", span: "md:col-span-4" },
+  { n: "07", icon: Compass, title: "Business Strategy", desc: "Beyond account management — category strategy, seasonal planning and marketplace expansion.", span: "md:col-span-4" },
+  { n: "08", icon: Zap, title: "Fast Support", desc: "Account suspended? Listing blocked? We respond fast, because downtime costs you sales.", span: "md:col-span-4" },
 ];
 
 const TiltCard = ({ card, i }) => {
@@ -61,7 +62,6 @@ const TiltCard = ({ card, i }) => {
 
 export const WhyChooseUs = () => (
   <section id="why" className="bg-white py-24 md:py-32 relative overflow-hidden">
-    <span id="services" className="absolute -top-20" aria-hidden="true" />
     <div className="max-w-7xl mx-auto px-5 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 24 }}

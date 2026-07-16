@@ -7,9 +7,9 @@ import { BUSINESS } from "../config/business";
 
 const LINKS = [
   { label: "Home", href: "#top" },
-  { label: "About", href: "#why" },
+  { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
-  { label: "Case Studies", href: "#results" },
+  { label: "Case Studies", href: "#case-studies" },
   { label: "Contact", href: "#contact" },
 ];
 

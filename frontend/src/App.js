@@ -7,11 +7,20 @@ import { Loader } from "./components/Loader";
 import { CursorGlow } from "./components/CursorGlow";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
-import { Marquee } from "./components/Marquee";
+import { TrustedBy } from "./components/TrustedBy";
+import { AboutTimeline } from "./components/AboutTimeline";
 import { TrustBar } from "./components/TrustBar";
 import { WhyChooseUs } from "./components/WhyChooseUs";
+import { MarketplaceExpertise } from "./components/MarketplaceExpertise";
+import { ServicesGrid } from "./components/ServicesGrid";
+import { CommandCenter } from "./components/CommandCenter";
+import { Workflow } from "./components/Workflow";
+import { CaseStudies } from "./components/CaseStudies";
+import { Testimonials } from "./components/Testimonials";
+import { FAQ } from "./components/FAQ";
 import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
+import "./sections.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -44,9 +53,17 @@ function App() {
       <Navbar onBookAudit={scrollToForm} />
       <main>
         <Hero started={!loading} />
-        <Marquee />
-        <TrustBar />
+        <TrustedBy />
+        <AboutTimeline />
         <WhyChooseUs />
+        <MarketplaceExpertise />
+        <ServicesGrid />
+        <CommandCenter />
+        <Workflow />
+        <TrustBar />
+        <CaseStudies />
+        <Testimonials />
+        <FAQ />
         <ContactSection />
       </main>
       <Footer />
