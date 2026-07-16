@@ -1,0 +1,140 @@
+{
+  "theme": "hybrid-high-contrast",
+  "design_philosophy": "Marketplace Command Center. A premium, high-conversion lead generation machine utilizing 2026 'Liquid Glass' UI principles, brutalist typography scales, and immersive 3D data visualization. Not a standard agency site—this is a 24/7 digital sales representative.",
+  "typography": {
+    "fonts": {
+      "heading": "Satoshi, sans-serif",
+      "body": "Inter, sans-serif",
+      "numbers": "Space Grotesk, sans-serif"
+    },
+    "hierarchy": {
+      "h1_hero": "font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.05]",
+      "h2_section": "font-heading text-3xl md:text-5xl font-semibold tracking-tight leading-tight",
+      "h3_card": "font-heading text-xl md:text-2xl font-medium tracking-tight",
+      "body_lg": "font-body text-lg md:text-xl font-normal leading-relaxed text-opacity-80",
+      "body_base": "font-body text-base font-normal leading-relaxed",
+      "metrics": "font-numbers text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter"
+    },
+    "rules": [
+      "Headings must use tight letter spacing (tracking-tight to tracking-tighter).",
+      "Numbers and statistics must exclusively use Space Grotesk to enforce the 'analytics' vibe.",
+      "Never center align body paragraphs; use left-alignment for crisp reading logic."
+    ]
+  },
+  "colors": {
+    "primary": "#0B1220",
+    "accent": "#2563EB",
+    "success": "#22C55E",
+    "background_light": "#F8FAFC",
+    "white": "#FFFFFF",
+    "surface_glass_dark": "rgba(255, 255, 255, 0.05)",
+    "surface_glass_light": "rgba(255, 255, 255, 0.7)",
+    "rules": [
+      "Hero section MUST be deep dark (#0B1220) to make the 3D graphics and 'Liquid Glass' form pop.",
+      "Below-the-fold sections transition to light (#F8FAFC) to enforce a high-end editorial feel.",
+      "Use #2563EB (Electric Blue) exclusively for primary CTAs and magnetic hover states.",
+      "Use #22C55E (Growth Green) specifically for positive metrics, checkmarks, and revenue charts."
+    ]
+  },
+  "visual_enhancers": {
+    "glassmorphism": {
+      "dark_mode": "backdrop-blur-2xl bg-white/5 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]",
+      "light_mode": "backdrop-blur-2xl bg-white/70 border border-black/5 shadow-sm"
+    },
+    "glow_effects": "Electric blue ambient shadows for the hero CTA button: shadow-[0_0_40px_rgba(37,99,235,0.4)]",
+    "borders": "1px translucent borders to define edges without adding visual weight."
+  },
+  "components": [
+    {
+      "name": "Premium Loader",
+      "description": "Absolute full screen dark (#0B1220), animated 'AC' monogram, elegant thin progress bar, smooth fade out using Framer Motion."
+    },
+    {
+      "name": "Sticky Navigation",
+      "description": "fixed top-0 w-full z-50. Starts transparent over the dark hero. On scroll past hero, switches to Light Mode Glass (bg-white/70 backdrop-blur-xl border-b border-slate-200 text-slate-900)."
+    },
+    {
+      "name": "3D Marketplace Command Center (Hero)",
+      "description": "React Three Fiber canvas in background. Floating UI cards showing abstracted revenue growth (green line charts) and 3D geometric nodes (particles/connections). MUST have a dark overlay bg-[#0B1220]/60 to ensure the form and text remain legible."
+    },
+    {
+      "name": "Hero Glass Lead Form",
+      "description": "The crown jewel. Uses 'dark_mode' glassmorphism. Inputs have transparent bg (bg-white/5), white text, white/20 border. Focus rings in Accent blue. Primary CTA button in solid Accent blue with glow."
+    },
+    {
+      "name": "Trust Bar",
+      "description": "Light background (#F8FAFC). Large animated counters using Space Grotesk. Flex layout with vertical dividers (border-slate-200)."
+    },
+    {
+      "name": "Why Choose Us Bento Grid",
+      "description": "Tetris grid layout. Mix of col-span-4, col-span-8. Cards use 'light_mode' glass/solid white. Hover effects: slight Y-translate, border darkens to slate-300."
+    }
+  ],
+  "grids": {
+    "bento_tetris": "grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8",
+    "rules": [
+      "Ensure grid items have different row and col spans to create tension and asymmetry.",
+      "Padding inside bento cards must be generous (p-8 to p-12)."
+    ]
+  },
+  "layouts": {
+    "spacing_scale": "Use 2x normal spacing. Sections must have py-24 or py-32.",
+    "container": "max-w-7xl mx-auto px-6 lg:px-8",
+    "hero": "min-h-screen relative flex items-center pt-24 pb-16 overflow-hidden"
+  },
+  "motion": {
+    "libraries": ["framer-motion", "lenis"],
+    "interactions": [
+      "Smooth Scrolling: Initialize Lenis for premium scroll weight.",
+      "Magnetic Buttons: Use framer-motion to slightly pull primary CTAs toward mouse cursor on hover.",
+      "Text Reveal: Hero headline should use staggered character or word reveal on load.",
+      "Card Tilt: Subtle 3D tilt effect on 'Why Choose Us' cards using onPointerMove."
+    ]
+  },
+  "3d_libraries": {
+    "hero_canvas": "react-three-fiber, @react-three/drei",
+    "implementation_notes": "Use <Float> and <Environment> from drei. Build an abstract data node network or floating glass analytic cards. Keep the mesh materials dark/translucent to not overpower the lead form. Wrap canvas in <Suspense>."
+  },
+  "image_urls": {
+    "hero_abstract_glass": [
+      {
+        "url": "https://images.unsplash.com/photo-1733723515193-3a04eccff681?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMDNkJTIwZ2xhc3MlMjBzaGFwZXMlMjBibHVlfGVufDB8fHx8MTc4NDE2MDIwMXww&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract wavy blue 3D glass texture (fallback if R3F fails or as loading texture)"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1691435420852-4a5ce46e6100?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMDNkJTIwZ2xhc3MlMjBzaGFwZXMlMjBibHVlfGVufDB8fHx8MTc4NDE2MDIwMXww&ixlib=rb-4.1.0&q=85",
+        "description": "Liquid glass structural form"
+      }
+    ],
+    "office_meeting": [
+      {
+        "url": "https://images.unsplash.com/photo-1706074806389-e9d7605c964a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBvZmZpY2UlMjBidXNpbmVzcyUyMG1lZXRpbmclMjBsdXh1cnl8ZW58MHx8fHwxNzg0MTYwMjAxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Premium modern office conference room (use for About/Contact background or mask)"
+      }
+    ]
+  },
+  "accessibility": {
+    "contrast": "Text over hero 3D canvas MUST have adequate text-shadow or a dark overlay underneath. Do NOT use completely transparent backgrounds where text readability is compromised.",
+    "testing": "All interactive elements, forms, and key text must have data-testid attributes."
+  },
+  "instructions_to_main_agent": {
+    "setup": "Install react-three-fiber, @react-three/drei, framer-motion, lucide-react, @studio-freight/react-lenis.",
+    "fonts": "Import Satoshi, Inter, and Space Grotesk from Google Fonts / Fontsource.",
+    "hero_implementation": "The hero section is critical. Split it visually: 50% left for typography (Headline, Subhead, Trust badges) and 50% right for the 'Liquid Glass' Lead Capture Form. The 3D R3F Canvas should sit behind both, filling the screen.",
+    "form": "The lead form is not just a UI component, it's the core business objective. Style the inputs flawlessly with focus states. Provide a success state (toast or inline) upon submission.",
+    "icons": "Do not use emojis for icons. Use lucide-react. E.g., <TrendingUp />, <BarChart />, <ShieldCheck />."
+  },
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "You tend to converge toward generic outputs. Do not make generic centered layouts or simplistic gradients.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "You MUST NOT apply universal transition (e.g., transition: all). Add specific transitions.",
+    "You MUST NOT center align the app container (.App { text-align: center; } is strictly forbidden).",
+    "Always use modern button styles (pill-shaped or sharp) with magnetic or glow hover states.",
+    "Every interaction needs micro-animations - hover states, transitions, entrance animations. Static = dead.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "NEVER use placeholder URLs (via.placeholder.com). Use the provided image_urls.",
+    "NEVER use AI assistant Emoji characters (🤖🧠💭💡) for icons.",
+    "Use 'sonner' for toast notifications."
+  ]
+}
