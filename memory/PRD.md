@@ -31,10 +31,13 @@ Build India's most premium Marketplace Growth website for **Advance Connect** �
 - `POST /api/leads` — create lead (validates email, min lengths), sends email notification
 - `GET /api/leads` — list leads (⚠️ currently unauthenticated — protect when admin panel is built)
 
+## Implemented (June 2026 — Phase 2, tested 100% frontend)
+Full homepage now has 14 sections in order: Hero → Trusted By marquee (glass chips, "100+ Businesses" clearly marked placeholder) → About timeline (5 GSAP milestones + mini counters) → Why Choose Us (8 bento cards) → Marketplace Expertise (Amazon/Flipkart/Meesho spotlight cards) → Services bento (12 services, featured dark cards) → Command Center (3D-tilt laptop mockup with animated dashboard: revenue/orders/inventory/health, sales bars, performance ring, "illustrative" disclaimer) → Workflow (6-step GSAP vertical timeline) → Success Metrics (verified counters + placeholders) → Case Studies (3 placeholder scenarios, Challenge→Solution→Result, animated graphs) → Testimonials (auto-slider, video-style placeholders — no fake names) → FAQ (6-item glass accordion) → Contact → Footer. GSAP + ScrollTrigger added. New nav anchors: #about, #services, #case-studies.
+
 ## Backlog
 - **P0**: Admin panel to view/manage leads (protect GET /api/leads with auth); update placeholder stats from admin
-- **P1**: About, Services, Case Studies, Contact pages; WhatsApp Business API / CRM webhook integration for leads
-- **P2**: Exact office address on map; SEO/meta/OG images; auto-reply email to the lead; testimonials section (verified only)
+- **P1**: Part 3 per user: AI chatbot, CRM, WhatsApp automation, enhanced contact/Google Maps; real case studies & testimonials content
+- **P2**: SEO/meta/OG images; auto-reply email to the lead; update nav location.hash on anchor click
 
 ## Notes
 - Minor: marketplace select uses HTML5 `required`, so the custom JS toast for empty marketplace never fires (harmless).
