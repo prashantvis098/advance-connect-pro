@@ -34,10 +34,23 @@ Build India's most premium Marketplace Growth website for **Advance Connect** �
 ## Implemented (June 2026 — Phase 2, tested 100% frontend)
 Full homepage now has 14 sections in order: Hero → Trusted By marquee (glass chips, "100+ Businesses" clearly marked placeholder) → About timeline (5 GSAP milestones + mini counters) → Why Choose Us (8 bento cards) → Marketplace Expertise (Amazon/Flipkart/Meesho spotlight cards) → Services bento (12 services, featured dark cards) → Command Center (3D-tilt laptop mockup with animated dashboard: revenue/orders/inventory/health, sales bars, performance ring, "illustrative" disclaimer) → Workflow (6-step GSAP vertical timeline) → Success Metrics (verified counters + placeholders) → Case Studies (3 placeholder scenarios, Challenge→Solution→Result, animated graphs) → Testimonials (auto-slider, video-style placeholders — no fake names) → FAQ (6-item glass accordion) → Contact → Footer. GSAP + ScrollTrigger added. New nav anchors: #about, #services, #case-studies.
 
+## Implemented (June 2026 — Phase 3, tested 100%)
+- **AI Marketplace Consultant**: floating glass chat widget (bottom-right) powered by GPT-5.4 via Emergent LLM key; streaming replies (`POST /api/chat`, text/plain stream, in-memory sessions + Mongo `chat_messages` log); suggested questions, typing animation, Book Consultation + WhatsApp CTAs; guided strictly by verified-facts system prompt (no fake stats).
+- **Contact redesign**: split layout — 6 business info tiles (Ritesh, phone, WhatsApp, email, Bhopal, hours) + glass contact form (source=contact_form → /api/leads → email notification).
+- **Map section**: glass Google Maps embed for Bhopal + Get Directions/Call/WhatsApp + office hours card.
+- **Premium footer**: 4 columns, newsletter (`POST /api/newsletter`, idempotent upsert), social icons (toast placeholders), Privacy/Terms (toast placeholders), back-to-top.
+- **Sticky lead gen**: floating WhatsApp/Call/Book buttons (bottom-left, appear after 700px scroll); 3 CTA bands (after Services, Success Metrics, FAQ).
+- **SEO**: meta description/keywords, canonical, Open Graph, Twitter card, JSON-LD Organization + LocalBusiness schemas.
+
+## API
+- `POST /api/leads` — create lead + email notification · `GET /api/leads` (⚠️ unauthenticated)
+- `POST /api/chat` — streaming AI consultant (GPT-5.4, Emergent LLM key; no rate limit yet)
+- `POST /api/newsletter` — subscribe email (upsert)
+
 ## Backlog
-- **P0**: Admin panel to view/manage leads (protect GET /api/leads with auth); update placeholder stats from admin
-- **P1**: Part 3 per user: AI chatbot, CRM, WhatsApp automation, enhanced contact/Google Maps; real case studies & testimonials content
-- **P2**: SEO/meta/OG images; auto-reply email to the lead; update nav location.hash on anchor click
+- **P0**: Admin panel (protect GET /api/leads; view leads/chats/newsletter; edit placeholder stats); rate-limit /api/chat
+- **P1**: Real Privacy Policy & Terms pages; real social profile URLs; real case studies/testimonials; exact office address on map
+- **P2**: CRM/WhatsApp Business webhook for leads; auto-reply email to leads; og:image asset
 
 ## Notes
 - Minor: marketplace select uses HTML5 `required`, so the custom JS toast for empty marketplace never fires (harmless).
