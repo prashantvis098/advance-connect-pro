@@ -47,6 +47,13 @@ Full homepage now has 14 sections in order: Hero → Trusted By marquee (glass c
 - `POST /api/chat` — streaming AI consultant (GPT-5.4, Emergent LLM key; no rate limit yet)
 - `POST /api/newsletter` — subscribe email (upsert)
 
+## Implemented (June 2026 — Phase 4: Performance & Polish, tested 100%)
+- Hero3D: particle count 500 (220 on low-end/mobile), 2 panels on mobile, dpr cap 1.25 mobile, rendering pauses (frameloop="never") when hero leaves viewport, memoized geometry.
+- React.lazy for MapSection + AIConsultant; GSAP triggers once:true; reduced backdrop-blur; translate3d cursor; faster loader.
+- Micro-interactions: button ripple, focus-visible outlines, skip-to-content link, prefers-reduced-motion, bigger touch targets.
+- SEO: robots.txt, sitemap.xml, og:image (generated brand banner), twitter summary_large_image.
+- QA (iteration_4): zero console errors, no overflow at 1920/1366/768/390/344, all forms/CTAs/AI chat verified.
+
 ## Backlog
 - **P0**: Admin panel (protect GET /api/leads; view leads/chats/newsletter; edit placeholder stats); rate-limit /api/chat
 - **P1**: Real Privacy Policy & Terms pages; real social profile URLs; real case studies/testimonials; exact office address on map
